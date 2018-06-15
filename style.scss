@@ -1,0 +1,90 @@
+$font-family: 'PT Sans', sans-serif;;
+$font-size: 16px;
+
+@mixin card-template
+{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 100%;
+    border: 1px solid black;
+    background-color: white;
+}
+
+*
+{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body
+{
+    font-family: $font-family;
+    font-size: $font-size;
+    width: 100%;
+    height: 100%;
+    background-color: #f6f2de;
+}
+
+
+.container
+{
+    position: relative;
+    width: 100%;
+    height: calc(100% - 40px);
+}
+
+.number
+{
+    position: absolute;
+    top: calc(50% - 100px);
+    left: calc(50% - 100px);
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+}
+
+.number-text
+{
+    font-weight: 700;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    color: #000;
+}
+
+.narrow
+{
+    @include card-template;
+    width: 400px;
+}
+
+.wide
+{
+    @include card-template;
+    width: 100%;
+    min-width: 400px;
+    max-width: 960px;
+}
+
+.card-shift
+{
+    transform: translateX(60px);
+}
+
+.card-shift-0
+{
+    transform: translateX(0px);
+}
+
+.card-width-small
+{
+    width: 400px;
+}
