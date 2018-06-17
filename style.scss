@@ -1,14 +1,21 @@
-$font-family: 'PT Sans', sans-serif;;
-$font-size: 16px;
+$font-family: 'Arial', sans-serif;
+$font-size: 24px;
+
+@mixin center-position
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 @mixin card-template
 {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    height: 100%;
-    border: 1px solid black;
+    height: calc(100% - 40px);
     background-color: white;
+    box-shadow: 0 0 8px rgba(1,1,1,.2);
+
+    @include center-position;
 }
 
 *
@@ -35,43 +42,44 @@ body
 {
     position: relative;
     width: 100%;
-    height: calc(100% - 40px);
+    min-height: 100%;
+    padding: 20px;
 }
 
 .number
 {
-    position: absolute;
-    top: calc(50% - 100px);
-    left: calc(50% - 100px);
     width: 100px;
     height: 100px;
-    border: 2px solid black;
+    border: 4px solid black;
     -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
     border-radius: 50px;
+
+    @include center-position;
 }
 
 .number-text
 {
-    font-weight: 700;
-    position: absolute;
-    top: 40%;
-    left: 45%;
+    font-family: $font-family;
+    font-size: $font-size * 2;
+    font-weight: bold;
     color: #000;
 }
 
 .narrow
 {
-    @include card-template;
     width: 400px;
+
+    @include card-template;
 }
 
 .wide
 {
-    @include card-template;
     width: 100%;
     min-width: 400px;
     max-width: 960px;
+
+    @include card-template;
 }
 
 .card-shift

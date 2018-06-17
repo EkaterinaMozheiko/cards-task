@@ -2,14 +2,17 @@ import { cards } from './src/cards.js'
 
 const container = document.querySelector('.container');
 
-renderCards();
+renderCards(cards);
 colorChange();
 
-function renderCards() {
+function renderCards(cards) {
   let number = 0;
+  if(!cards) {
+    return;
+  }
   const compiledData = cards.map(((card, index) => {
-    const source = document.querySelector('#card-template').innerHTML,
-        template = Handlebars.compile(source);
+    const source = document.querySelector('#card-template').innerHTML;
+    const template = Handlebars.compile(source);
 
     Handlebars.registerHelper('card-type', card.type);
 
@@ -20,7 +23,7 @@ function renderCards() {
       Handlebars.registerHelper('card-shift', 'card-shift-0');
     }
 
-    return template({number: ++number});
+    return template({ number: ++number });
   }));
 
   container.innerHTML = compiledData.join('');
@@ -30,26 +33,32 @@ function renderCards() {
     const wideCards = document.querySelectorAll('.wide');
     wideCards.forEach(wideCard => wideCard.style.width = '400px');
   }
-
 }
 
 function colorChange() {
-
   const narrowCards = document.querySelectorAll('.narrow'),
         wideCards = document.querySelectorAll('.wide'),
-        arrayCards = [...narrowCards, ...wideCards];
-  const bodyElement = document.querySelector('body');
+        arrayCards = [...narrowCards, ...wideCards],
+        bodyElement = document.querySelector('body');
 
   [...arrayCards].map(card => {
-    card.addEventListener('mouseenter', (e) => {
-      bodyElement.style.backgroundColor = '#f6f2de';
-      e.stopPropagation();
+
+    card.addEventListener('click', event => {
+      if (event.shiftKey || event.altKey) {
+        return;
+      }
+      cards.pop();
+      renderCards(cards);
+      history.pushState(cards, null);
     });
 
-    card.addEventListener('mouseleave', (e) => {
+    card.addEventListener('mouseenter', event => {
+      bodyElement.style.backgroundColor = '#f6f2de';
+    });
+
+    card.addEventListener('mouseleave', event => {
       bodyElement.style.backgroundColor = '#e9e6d3';
-      e.stopPropagation();
-    })
+    });
   });
 
   container.addEventListener('mouseenter', () => {
@@ -61,28 +70,30 @@ function colorChange() {
   });
 }
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', changeCards.bind(null, cards));
+
+function changeCards(cards, event) {
   if (event.shiftKey && event.altKey) {
     cards.push(
       {
         type: 'wide',
       });
-    renderCards();
-    colorChange();
-    return;
   }
-
-  if (event.shiftKey) {
+  else if (event.shiftKey) {
     cards.push(
       {
         type: 'narrow',
       });
-    renderCards();
-    colorChange();
-    return;
   }
 
-  cards.pop();
-  renderCards();
+  renderCards(cards);
+  colorChange();
+  history.pushState(cards, null);
+}
+
+
+window.addEventListener ("popstate", event => {
+  const state = event.state;
+  renderCards(state);
   colorChange();
 });
