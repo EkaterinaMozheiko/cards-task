@@ -70,8 +70,6 @@ function colorChange() {
   });
 }
 
-document.addEventListener('click', changeCards.bind(null, cards));
-
 function changeCards(cards, event) {
   if (event.shiftKey && event.altKey) {
     cards.push(
@@ -91,6 +89,7 @@ function changeCards(cards, event) {
   history.pushState(cards, null);
 }
 
+document.addEventListener('click', changeCards.bind(null, cards));
 
 window.addEventListener ("popstate", event => {
   const state = event.state;
